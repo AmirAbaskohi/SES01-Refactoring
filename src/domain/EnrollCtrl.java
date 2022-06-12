@@ -11,16 +11,9 @@ public class EnrollCtrl {
         for (CSE o : courses) {
             s.courseHasBeenPassed(o);
             s.coursePrerequisitesHasBeenPassed(o);
-            // Checking the taken twice and time conflict
-            for (CSE o2 : courses) {
-                if (o == o2)
-                    continue;
-                if (o.getExamTime().equals(o2.getExamTime()))
-                    throw new EnrollmentRulesViolationException(String.format("Two offerings %s and %s have the same exam time", o, o2));
-                if (o.getCourse().equals(o2.getCourse()))
-                    throw new EnrollmentRulesViolationException(String.format("%s is requested to be taken twice", o.getCourse().getName()));
-            }
-		}
+            checkCourseExamTimeConflicts(courses, o);
+            checkDuplicateEnrollment(courses, o);
+        }
         // Checking units requested with the student's GPA
 		int unitsRequested = 0;
 		for (CSE o : courses)
@@ -42,5 +35,23 @@ public class EnrollCtrl {
 		for (CSE o : courses)
 			s.takeCourse(o.getCourse(), o.getSection());
 	}
+
+    private void checkDuplicateEnrollment(List<CSE> courses, CSE o) throws EnrollmentRulesViolationException {
+        for (CSE o2 : courses) {
+            if (o == o2)
+                continue;
+            if (o.getCourse().equals(o2.getCourse()))
+                throw new EnrollmentRulesViolationException(String.format("%s is requested to be taken twice", o.getCourse().getName()));
+        }
+    }
+
+    private void checkCourseExamTimeConflicts(List<CSE> courses, CSE o) throws EnrollmentRulesViolationException {
+        for (CSE o2 : courses) {
+            if (o == o2)
+                continue;
+            if (o.getExamTime().equals(o2.getExamTime()))
+                throw new EnrollmentRulesViolationException(String.format("Two offerings %s and %s have the same exam time", o, o2));
+        }
+    }
 
 }
