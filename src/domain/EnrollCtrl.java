@@ -7,7 +7,6 @@ import domain.exceptions.EnrollmentRulesViolationException;
 
 public class EnrollCtrl {
 	public void enroll(Student s, List<CSE> courses) throws EnrollmentRulesViolationException {
-        Map<Term, Map<Course, Double>> transcript = s.getTranscript();
         for (CSE o : courses) {
             s.courseHasBeenPassed(o);
             s.coursePrerequisitesHasBeenPassed(o);
@@ -21,7 +20,6 @@ public class EnrollCtrl {
 				(s.getGpa() < 16 && unitsRequested > 16) ||
 				(unitsRequested > 20))
 			throw new EnrollmentRulesViolationException(String.format("Number of units (%d) requested does not match GPA of %f", unitsRequested, s.getGpa()));
-        // Take the course
 		for (CSE o : courses)
 			s.takeCourse(o.getCourse(), o.getSection());
 	}
