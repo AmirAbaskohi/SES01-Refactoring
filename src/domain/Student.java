@@ -1,4 +1,6 @@
 package domain;
+import domain.exceptions.EnrollmentRulesViolationException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,5 +56,14 @@ public class Student {
 	
 	public String toString() {
 		return name;
+	}
+
+	public void courseHasBeenPassed(CSE o) throws EnrollmentRulesViolationException {
+		for (Map.Entry<Term, Map<Course, Double>> tr : transcript.entrySet()) {
+			for (Map.Entry<Course, Double> r : tr.getValue().entrySet()) {
+				if (r.getKey().equals(o.getCourse()) && r.getValue() >= 10)
+					throw new EnrollmentRulesViolationException(String.format("The student has already passed %s", o.getCourse().getName()));
+			}
+		}
 	}
 }
