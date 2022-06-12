@@ -7,16 +7,11 @@ import domain.exceptions.EnrollmentRulesViolationException;
 
 public class EnrollCtrl {
 	public void enroll(Student s, List<CSE> courses) throws EnrollmentRulesViolationException {
-        // Getting each course student wants for this term
         Map<Term, Map<Course, Double>> transcript = s.getTranscript();
-		// For each course
         for (CSE o : courses) {
-            // Check if the wanted course has been passed already
             s.courseHasBeenPassed(o);
-            // Checking the prerequisites
-			List<Course> prereqs = o.getCourse().getPrerequisites();
 			nextPre:
-			for (Course pre : prereqs) {
+			for (Course pre : o.getCourse().getPrerequisites()) {
                 for (Map.Entry<Term, Map<Course, Double>> tr : transcript.entrySet()) {
                     for (Map.Entry<Course, Double> r : tr.getValue().entrySet()) {
                         if (r.getKey().equals(pre) && r.getValue() >= 10)
