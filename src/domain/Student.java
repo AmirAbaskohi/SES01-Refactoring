@@ -66,4 +66,17 @@ public class Student {
 			}
 		}
 	}
+
+	public void coursePrerequisitesHasBeenPassed(CSE o) throws EnrollmentRulesViolationException {
+		nextPre:
+		for (Course pre : o.getCourse().getPrerequisites()) {
+			for (Map.Entry<Term, Map<Course, Double>> tr : transcript.entrySet()) {
+				for (Map.Entry<Course, Double> r : tr.getValue().entrySet()) {
+					if (r.getKey().equals(pre) && r.getValue() >= 10)
+						continue nextPre;
+				}
+			}
+			throw new EnrollmentRulesViolationException(String.format("The student has not passed %s as a prerequisite of %s", pre.getName(), o.getCourse().getName()));
+		}
+	}
 }

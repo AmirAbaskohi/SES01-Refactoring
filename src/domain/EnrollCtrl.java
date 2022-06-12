@@ -10,16 +10,7 @@ public class EnrollCtrl {
         Map<Term, Map<Course, Double>> transcript = s.getTranscript();
         for (CSE o : courses) {
             s.courseHasBeenPassed(o);
-			nextPre:
-			for (Course pre : o.getCourse().getPrerequisites()) {
-                for (Map.Entry<Term, Map<Course, Double>> tr : transcript.entrySet()) {
-                    for (Map.Entry<Course, Double> r : tr.getValue().entrySet()) {
-                        if (r.getKey().equals(pre) && r.getValue() >= 10)
-                            continue nextPre;
-                    }
-				}
-				throw new EnrollmentRulesViolationException(String.format("The student has not passed %s as a prerequisite of %s", pre.getName(), o.getCourse().getName()));
-			}
+            s.coursePrerequisitesHasBeenPassed(o);
             // Checking the taken twice and time conflict
             for (CSE o2 : courses) {
                 if (o == o2)
@@ -51,6 +42,5 @@ public class EnrollCtrl {
 		for (CSE o : courses)
 			s.takeCourse(o.getCourse(), o.getSection());
 	}
-
 
 }
