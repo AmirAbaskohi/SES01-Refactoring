@@ -13,16 +13,20 @@ public class EnrollCtrl {
             checkCourseExamTimeConflicts(courses, o);
             checkDuplicateEnrollment(courses, o);
         }
-		int unitsRequested = 0;
-		for (CSE o : courses)
-			unitsRequested += o.getCourse().getUnits();
+        checkUnitsRequested(s, courses);
+        for (CSE o : courses)
+			s.takeCourse(o.getCourse(), o.getSection());
+	}
+
+    private void checkUnitsRequested(Student s, List<CSE> courses) throws EnrollmentRulesViolationException {
+        int unitsRequested = 0;
+        for (CSE o : courses)
+            unitsRequested += o.getCourse().getUnits();
         if ((s.getGpa() < 12 && unitsRequested > 14) ||
 				(s.getGpa() < 16 && unitsRequested > 16) ||
 				(unitsRequested > 20))
 			throw new EnrollmentRulesViolationException(String.format("Number of units (%d) requested does not match GPA of %f", unitsRequested, s.getGpa()));
-		for (CSE o : courses)
-			s.takeCourse(o.getCourse(), o.getSection());
-	}
+    }
 
     private void checkDuplicateEnrollment(List<CSE> courses, CSE o) throws EnrollmentRulesViolationException {
         for (CSE o2 : courses) {
