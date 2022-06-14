@@ -43,6 +43,16 @@ public class Course {
 		return sb.toString();
 	}
 
+	public boolean checkStudentPrerequisites(Student student) {
+		for (Map.Entry<Term, Map<Course, Double>> tr : student.getTranscript().entrySet()) {
+			for (Map.Entry<Course, Double> r : tr.getValue().entrySet()) {
+				if (r.getKey().equals(this) && r.getValue() >= 10)
+					return true;
+			}
+		}
+		return false;
+	}
+
 	public String getName() {
 		return name;
 	}
