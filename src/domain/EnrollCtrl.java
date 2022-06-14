@@ -2,19 +2,20 @@ package domain;
 
 import java.util.List;
 
+import domain.exceptions.EnrollmentRequest;
 import domain.exceptions.EnrollmentRulesViolationException;
 
 public class EnrollCtrl {
-	public void enroll(Student student, List<CourseSectionExamDate> courses) throws EnrollmentRulesViolationException {
-        for (CourseSectionExamDate o : courses) {
-            student.courseHasBeenPassed(o);
-            student.coursePrerequisitesHasBeenPassed(o);
-            checkCourseExamTimeConflicts(courses, o);
-            checkDuplicateEnrollment(courses, o);
+	public void enroll(EnrollmentRequest enrollmentRequest) throws EnrollmentRulesViolationException {
+        for (CourseSectionExamDate o : enrollmentRequest.getCourses()) {
+            enrollmentRequest.getStudent().courseHasBeenPassed(o);
+            enrollmentRequest.getStudent().coursePrerequisitesHasBeenPassed(o);
+            checkCourseExamTimeConflicts(enrollmentRequest.getCourses(), o);
+            checkDuplicateEnrollment(enrollmentRequest.getCourses(), o);
         }
-        checkUnitsRequested(student, courses);
-        for (CourseSectionExamDate o : courses)
-			student.takeCourse(o.getCourse(), o.getSection());
+        checkUnitsRequested(enrollmentRequest.getStudent(), enrollmentRequest.getCourses());
+        for (CourseSectionExamDate o : enrollmentRequest.getCourses())
+            enrollmentRequest.getStudent().takeCourse(o.getCourse(), o.getSection());
 	}
 
     private void checkUnitsRequested(Student s, List<CourseSectionExamDate> courses) throws EnrollmentRulesViolationException {
