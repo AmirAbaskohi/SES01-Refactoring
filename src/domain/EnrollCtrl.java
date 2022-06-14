@@ -13,16 +13,17 @@ public class EnrollCtrl {
             checkCourseExamTimeConflicts(enrollmentRequest.getCourses(), o);
             checkDuplicateEnrollment(enrollmentRequest.getCourses(), o);
         }
-        checkUnitsRequested(enrollmentRequest.getStudent(), enrollmentRequest.getCourses());
+        checkUnitsRequested(enrollmentRequest);
         for (CourseSectionExamDate o : enrollmentRequest.getCourses())
             enrollmentRequest.getStudent().takeCourse(o.getCourse(), o.getSection());
 	}
 
-    private void checkUnitsRequested(Student s, List<CourseSectionExamDate> courses) throws EnrollmentRulesViolationException {
-        if ((s.getGpa() < 12 && getUnitsRequested(courses) > 14) ||
-				(s.getGpa() < 16 && getUnitsRequested(courses) > 16) ||
-				(getUnitsRequested(courses) > 20))
-			throw new EnrollmentRulesViolationException(String.format("Number of units (%d) requested does not match GPA of %f", getUnitsRequested(courses), s.getGpa()));
+    private void checkUnitsRequested(EnrollmentRequest enrollmentRequest) throws EnrollmentRulesViolationException {
+        if ((enrollmentRequest.getStudent().getGpa() < 12 && getUnitsRequested(enrollmentRequest.getCourses()) > 14) ||
+				(enrollmentRequest.getStudent().getGpa() < 16 && getUnitsRequested(enrollmentRequest.getCourses()) > 16) ||
+				(getUnitsRequested(enrollmentRequest.getCourses()) > 20))
+			throw new EnrollmentRulesViolationException(String.format("Number of units (%d) requested does not match GPA of %f",
+                    getUnitsRequested(enrollmentRequest.getCourses()), enrollmentRequest.getStudent().getGpa()));
     }
 
     private int getUnitsRequested(List<CourseSectionExamDate> courses) {
