@@ -30,21 +30,22 @@ public class EnrollCtrl {
         return courses.stream().mapToInt(course -> course.getCourse().getUnits()).sum();
     }
 
-    private void checkDuplicateEnrollment(List<CourseSectionExamDate> courses, CourseSectionExamDate o) throws EnrollmentRulesViolationException {
-        for (CourseSectionExamDate o2 : courses) {
-            if (o == o2)
+    private void checkDuplicateEnrollment(List<CourseSectionExamDate> courses, CourseSectionExamDate reviewingCourseSectionExamDate) throws EnrollmentRulesViolationException {
+        for (CourseSectionExamDate courseSectionExamDate : courses) {
+            if (reviewingCourseSectionExamDate == courseSectionExamDate)
                 continue;
-            if (o.getCourse().equals(o2.getCourse()))
-                throw new EnrollmentRulesViolationException(String.format("%s is requested to be taken twice", o.getCourse().getName()));
+            if (reviewingCourseSectionExamDate.getCourse().equals(courseSectionExamDate.getCourse()))
+                throw new EnrollmentRulesViolationException(String.format("%s is requested to be taken twice",
+                        reviewingCourseSectionExamDate.getCourse().getName()));
         }
     }
 
-    private void checkCourseExamTimeConflicts(List<CourseSectionExamDate> courses, CourseSectionExamDate o) throws EnrollmentRulesViolationException {
-        for (CourseSectionExamDate o2 : courses) {
-            if (o == o2)
+    private void checkCourseExamTimeConflicts(List<CourseSectionExamDate> courses, CourseSectionExamDate reviewingCourseSectionExamDate) throws EnrollmentRulesViolationException {
+        for (CourseSectionExamDate courseSectionExamDate : courses) {
+            if (reviewingCourseSectionExamDate == courseSectionExamDate)
                 continue;
-            if (o.checkExamTimeConflict(o2))
-                throw new EnrollmentRulesViolationException(String.format("Two offerings %s and %s have the same exam time", o, o2));
+            if (reviewingCourseSectionExamDate.checkExamTimeConflict(courseSectionExamDate))
+                throw new EnrollmentRulesViolationException(String.format("Two offerings %s and %s have the same exam time", reviewingCourseSectionExamDate, courseSectionExamDate));
         }
     }
 
