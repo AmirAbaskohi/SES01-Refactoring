@@ -18,8 +18,8 @@ public class Course {
 		prerequisites = new ArrayList<Course>();
 	}
 	
-	public void addPre(Course c) {
-		getPrerequisites().add(c);
+	public void addPre(Course course) {
+		getPrerequisites().add(course);
 	}
 
 	public Course withPre(Course... pres) {

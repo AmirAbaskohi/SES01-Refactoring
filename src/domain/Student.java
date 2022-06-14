@@ -18,6 +18,7 @@ public class Student {
         Course course;
 	    int section;
     }
+
 	private Map<Term, Map<Course, Double>> transcript;
 	private List<CourseSection> currentTerm;
 
@@ -28,8 +29,8 @@ public class Student {
 		this.currentTerm = new ArrayList<>();
 	}
 	
-	public void takeCourse(Course c, int section) {
-		currentTerm.add(new CourseSection(c, section));
+	public void takeCourse(Course course, int section) {
+		currentTerm.add(new CourseSection(course, section));
 	}
 
 	public Map<Term, Map<Course, Double>> getTranscript() {
@@ -58,19 +59,21 @@ public class Student {
 		return name;
 	}
 
-	public void courseHasBeenPassed(CourseSectionExamDate o) throws EnrollmentRulesViolationException {
+	public void courseHasBeenPassed(CourseSectionExamDate courseSectionExamDate) throws EnrollmentRulesViolationException {
 		for (Map.Entry<Term, Map<Course, Double>> tr : transcript.entrySet()) {
 			for (Map.Entry<Course, Double> r : tr.getValue().entrySet()) {
-				if (r.getKey().equals(o.getCourse()) && r.getValue() >= 10)
-					throw new EnrollmentRulesViolationException(String.format("The student has already passed %s", o.getCourse().getName()));
+				if (r.getKey().equals(courseSectionExamDate.getCourse()) && r.getValue() >= 10)
+					throw new EnrollmentRulesViolationException(String.format("The student has already passed %s",
+							courseSectionExamDate.getCourse().getName()));
 			}
 		}
 	}
 
-	public void coursePrerequisitesHasBeenPassed(CourseSectionExamDate o) throws EnrollmentRulesViolationException {
-		for (Course pre : o.getCourse().getPrerequisites()) {
+	public void coursePrerequisitesHasBeenPassed(CourseSectionExamDate courseSectionExamDate) throws EnrollmentRulesViolationException {
+		for (Course pre : courseSectionExamDate.getCourse().getPrerequisites()) {
 			if (!pre.checkStudentPrerequisites(this))
-				throw new EnrollmentRulesViolationException(String.format("The student has not passed %s as a prerequisite of %s", pre.getName(), o.getCourse().getName()));
+				throw new EnrollmentRulesViolationException(String.format("The student has not passed %s as a prerequisite of %s",
+						pre.getName(), courseSectionExamDate.getCourse().getName()));
 		}
 	}
 
