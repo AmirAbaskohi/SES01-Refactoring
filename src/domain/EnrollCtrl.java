@@ -5,16 +5,16 @@ import java.util.List;
 import domain.exceptions.EnrollmentRulesViolationException;
 
 public class EnrollCtrl {
-	public void enroll(Student s, List<CourseSectionExamDate> courses) throws EnrollmentRulesViolationException {
+	public void enroll(Student student, List<CourseSectionExamDate> courses) throws EnrollmentRulesViolationException {
         for (CourseSectionExamDate o : courses) {
-            s.courseHasBeenPassed(o);
-            s.coursePrerequisitesHasBeenPassed(o);
+            student.courseHasBeenPassed(o);
+            student.coursePrerequisitesHasBeenPassed(o);
             checkCourseExamTimeConflicts(courses, o);
             checkDuplicateEnrollment(courses, o);
         }
-        checkUnitsRequested(s, courses);
+        checkUnitsRequested(student, courses);
         for (CourseSectionExamDate o : courses)
-			s.takeCourse(o.getCourse(), o.getSection());
+			student.takeCourse(o.getCourse(), o.getSection());
 	}
 
     private void checkUnitsRequested(Student s, List<CourseSectionExamDate> courses) throws EnrollmentRulesViolationException {
