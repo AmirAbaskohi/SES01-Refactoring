@@ -7,11 +7,11 @@ import domain.exceptions.EnrollmentRulesViolationException;
 
 public class EnrollCtrl {
 	public void enroll(EnrollmentRequest enrollmentRequest) throws EnrollmentRulesViolationException {
-        for (CourseSectionExamDate o : enrollmentRequest.getCourses()) {
-            enrollmentRequest.getStudent().courseHasBeenPassed(o);
-            enrollmentRequest.getStudent().coursePrerequisitesHasBeenPassed(o);
-            checkCourseExamTimeConflicts(enrollmentRequest.getCourses(), o);
-            checkDuplicateEnrollment(enrollmentRequest.getCourses(), o);
+        for (CourseSectionExamDate courseSectionExamDate : enrollmentRequest.getCourses()) {
+            enrollmentRequest.getStudent().courseHasBeenPassed(courseSectionExamDate);
+            enrollmentRequest.getStudent().coursePrerequisitesHasBeenPassed(courseSectionExamDate);
+            checkCourseExamTimeConflicts(enrollmentRequest.getCourses(), courseSectionExamDate);
+            checkDuplicateEnrollment(enrollmentRequest.getCourses(), courseSectionExamDate);
         }
         checkUnitsRequested(enrollmentRequest);
         for (CourseSectionExamDate o : enrollmentRequest.getCourses())
