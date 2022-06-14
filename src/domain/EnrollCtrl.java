@@ -18,9 +18,7 @@ public class EnrollCtrl {
 	}
 
     private void checkUnitsRequested(Student s, List<CourseSectionExamDate> courses) throws EnrollmentRulesViolationException {
-        int unitsRequested = 0;
-        for (CourseSectionExamDate o : courses)
-            unitsRequested += o.getCourse().getUnits();
+        int unitsRequested = courses.stream().mapToInt(course -> course.getCourse().getUnits()).sum();
         if ((s.getGpa() < 12 && unitsRequested > 14) ||
 				(s.getGpa() < 16 && unitsRequested > 16) ||
 				(unitsRequested > 20))
