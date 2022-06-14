@@ -18,11 +18,14 @@ public class EnrollCtrl {
 	}
 
     private void checkUnitsRequested(Student s, List<CourseSectionExamDate> courses) throws EnrollmentRulesViolationException {
-        int unitsRequested = courses.stream().mapToInt(course -> course.getCourse().getUnits()).sum();
-        if ((s.getGpa() < 12 && unitsRequested > 14) ||
-				(s.getGpa() < 16 && unitsRequested > 16) ||
-				(unitsRequested > 20))
-			throw new EnrollmentRulesViolationException(String.format("Number of units (%d) requested does not match GPA of %f", unitsRequested, s.getGpa()));
+        if ((s.getGpa() < 12 && getUnitsRequested(courses) > 14) ||
+				(s.getGpa() < 16 && getUnitsRequested(courses) > 16) ||
+				(getUnitsRequested(courses) > 20))
+			throw new EnrollmentRulesViolationException(String.format("Number of units (%d) requested does not match GPA of %f", getUnitsRequested(courses), s.getGpa()));
+    }
+
+    private int getUnitsRequested(List<CourseSectionExamDate> courses) {
+        return courses.stream().mapToInt(course -> course.getCourse().getUnits()).sum();
     }
 
     private void checkDuplicateEnrollment(List<CourseSectionExamDate> courses, CourseSectionExamDate o) throws EnrollmentRulesViolationException {
