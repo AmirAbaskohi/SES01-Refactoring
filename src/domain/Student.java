@@ -58,7 +58,7 @@ public class Student {
 		return name;
 	}
 
-	public void courseHasBeenPassed(CSE o) throws EnrollmentRulesViolationException {
+	public void courseHasBeenPassed(CourseSectionExamDate o) throws EnrollmentRulesViolationException {
 		for (Map.Entry<Term, Map<Course, Double>> tr : transcript.entrySet()) {
 			for (Map.Entry<Course, Double> r : tr.getValue().entrySet()) {
 				if (r.getKey().equals(o.getCourse()) && r.getValue() >= 10)
@@ -67,7 +67,7 @@ public class Student {
 		}
 	}
 
-	public void coursePrerequisitesHasBeenPassed(CSE o) throws EnrollmentRulesViolationException {
+	public void coursePrerequisitesHasBeenPassed(CourseSectionExamDate o) throws EnrollmentRulesViolationException {
 		nextPre:
 		for (Course pre : o.getCourse().getPrerequisites()) {
 			for (Map.Entry<Term, Map<Course, Double>> tr : transcript.entrySet()) {

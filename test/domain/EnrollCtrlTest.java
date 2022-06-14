@@ -43,12 +43,12 @@ public class EnrollCtrlTest {
 		bebe = new Student("1", "Bebe");
 	}
 
-	private ArrayList<CSE> requestedOfferings(Course...courses) {
+	private ArrayList<CourseSectionExamDate> requestedOfferings(Course...courses) {
 		Calendar cal = Calendar.getInstance();
-		ArrayList<CSE> result = new ArrayList<>();
+		ArrayList<CourseSectionExamDate> result = new ArrayList<>();
 		for (Course course : courses) {
 			cal.add(Calendar.DATE, 1);
-			result.add(new CSE(course, cal.getTime()));
+			result.add(new CourseSectionExamDate(course, cal.getTime()));
 		}
 		return result;
 	}
@@ -134,9 +134,9 @@ public class EnrollCtrlTest {
 		Calendar cal = Calendar.getInstance();
 		new EnrollCtrl().enroll(bebe,
 				List.of(
-					new CSE(phys1, cal.getTime()),
-					new CSE(math1, cal.getTime()),
-					new CSE(phys1, cal.getTime())
+					new CourseSectionExamDate(phys1, cal.getTime()),
+					new CourseSectionExamDate(math1, cal.getTime()),
+					new CourseSectionExamDate(phys1, cal.getTime())
 				));
 	}
 
