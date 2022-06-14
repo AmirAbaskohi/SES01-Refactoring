@@ -19,15 +19,11 @@ public class EnrollCtrl {
 	}
 
     private void checkUnitsRequested(EnrollmentRequest enrollmentRequest) throws EnrollmentRulesViolationException {
-        if ((enrollmentRequest.getStudent().getGpa() < 12 && getUnitsRequested(enrollmentRequest.getCourses()) > 14) ||
-				(enrollmentRequest.getStudent().getGpa() < 16 && getUnitsRequested(enrollmentRequest.getCourses()) > 16) ||
-				(getUnitsRequested(enrollmentRequest.getCourses()) > 20))
+        if ((enrollmentRequest.getStudent().getGpa() < 12 && enrollmentRequest.getUnitsRequested() > 14) ||
+				(enrollmentRequest.getStudent().getGpa() < 16 && enrollmentRequest.getUnitsRequested() > 16) ||
+				(enrollmentRequest.getUnitsRequested() > 20))
 			throw new EnrollmentRulesViolationException(String.format("Number of units (%d) requested does not match GPA of %f",
-                    getUnitsRequested(enrollmentRequest.getCourses()), enrollmentRequest.getStudent().getGpa()));
-    }
-
-    private int getUnitsRequested(List<CourseSectionExamDate> courses) {
-        return courses.stream().mapToInt(course -> course.getCourse().getUnits()).sum();
+                    enrollmentRequest.getUnitsRequested(), enrollmentRequest.getStudent().getGpa()));
     }
 
     private void checkDuplicateEnrollment(List<CourseSectionExamDate> courses, CourseSectionExamDate reviewingCourseSectionExamDate) throws EnrollmentRulesViolationException {

@@ -22,5 +22,9 @@ public class EnrollmentRequest {
         return courses;
     }
 
+    public int getUnitsRequested() {
+        return courses.stream().mapToInt(course -> course.getCourse().getUnits()).sum();
+    }
+
 
 }
