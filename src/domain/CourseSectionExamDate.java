@@ -60,7 +60,8 @@ public class CourseSectionExamDate {
 			if (this == courseSectionExamDate)
 				continue;
 			if (this.checkExamTimeConflict(courseSectionExamDate))
-				throw new EnrollmentRulesViolationException(String.format("Two offerings %s and %s have the same exam time", this, courseSectionExamDate));
+				throw new EnrollmentRulesViolationException(String.format("Two offerings %s and %s have the same exam time",
+						this, courseSectionExamDate));
 		}
 	}
 }
